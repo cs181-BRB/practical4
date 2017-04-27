@@ -169,6 +169,7 @@ class Learner(object):
             self.count += 1
             if self.last_reward < 0:
                 print 'DEAD with %i' % self.last_reward 
+                print 'Score was %i' % state['score']
             # W_actions = self.W[last_t['dist']][t['top']][t['bot']][m['vel']][m['top']][m['bot']]
             # self.W[last_t['dist']][last_t['top']][last_t['bot']][last_m['vel']][last_m['top']][last_m['bot']][self.last_action] -= LEARNING_RATE * (
             #     self.W[last_t['dist']][last_t['top']][last_t['bot']][last_m['vel']][last_m['top']][last_m['bot']][self.last_action] - (
@@ -177,7 +178,8 @@ class Learner(object):
             #     )
 
         # epsilon-greedy policy for minimizing loss, balancing exploration vs. exploitation
-        if npr.rand() < EPSILON:
+        # but no exploration past 10 b/c only mistakes then
+        if state['score'] < 10 and npr.rand() < EPSILON:
             new_action = npr.rand() < 0.5
         else:
            new_action = self.get_policy(state)
