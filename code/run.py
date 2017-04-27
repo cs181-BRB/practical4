@@ -6,10 +6,15 @@ from SwingyMonkey import SwingyMonkey
 
 from collections import defaultdict as dd
 
-START_EPSILON = 0.5
 EPSILON = 0.1
-LEARNING_RATE = 0.9
-DISCOUNT_FACTOR = 0.9
+LEARNING_RATE = 0.100187
+DISCOUNT_FACTOR = 0.990000
+MTTOP_LOW = -118 #DIST_LOW
+MTTOP_HIGH = 499
+MTBOT_LOW = -300
+MTBOT_HIGH = 500
+MBOT_LOW = 500
+MBOT_HIGH = 80
 # nested 6 layers for tree_dist, tree_top, tree_bot, monkey_vel, monkey_top, monkey_bot
 
 class Learner(object):
@@ -38,7 +43,6 @@ class Learner(object):
         self.last_action = None
         self.last_reward = None
         self.gravity = None
-        self.epsil = START_EPSILON
 
     def get_W_parameters_array(self, state):
         '''
@@ -66,24 +70,30 @@ class Learner(object):
         #     vel += 1
 
         mbot = 0
-        for limit in [80, 270, 999]:
+        for limit in [MBOT_LOW, MBOT_HIGH, 999]:
             if cur_m['bot'] < limit:
                 break
             mbot += 1
 
-        dist = 0
-        for limit in [75, 200, 999]:
-            if cur_t['dist'] < limit:
-                break
-            dist += 1
+        # dist = 0
+        # for limit in [238, 10, 999]:
+        #     if cur_t['dist'] < limit:
+        #         break
+        #     dist += 1
             
+        mttop = 0
+        for limit in [MTTOP_LOW, MTTOP_HIGH, 999]:
+            if cur_m['top'] - cur_t['top'] < limit:
+                break
+            mttop += 1
+
         mtbot = 0
-        for limit in [0, 40, 999]:
+        for limit in [MTBOT_LOW, MTBOT_HIGH, 999]:
             if cur_m['bot'] - cur_t['bot'] < limit:
                 break
             mtbot += 1
 
-        return [mbot, dist, mtbot]
+        return [mbot, mttop, mtbot]
 
 
     def get_W_action_array(self, state):
@@ -189,7 +199,7 @@ def run_games(learner, hist, iters = 100, t_len = 100):
     '''
     Driver function to simulate learning by having the agent play a sequence of games.
     '''
-    
+    score = 0
     for ii in range(iters):
         # Make a new monkey object.
         swing = SwingyMonkey(sound=False,                  # Don't play sounds.
@@ -204,10 +214,11 @@ def run_games(learner, hist, iters = 100, t_len = 100):
         
         # Save score history.
         hist.append(swing.score)
+        score += swing.score
 
         # Reset the state of the learner.
         learner.reset()
-        
+    print score
     return
 
 
