@@ -6,15 +6,28 @@ from SwingyMonkey import SwingyMonkey
 
 from collections import defaultdict as dd
 
-EPSILON = 0.1
-LEARNING_RATE = 0.100187
-DISCOUNT_FACTOR = 0.990000
-MTTOP_LOW = -118 #DIST_LOW
-MTTOP_HIGH = 499
-MTBOT_LOW = -300
-MTBOT_HIGH = 500
-MBOT_LOW = 500
-MBOT_HIGH = 80
+Minimum of observed values is -9019.000000, at location:
+                NAME          TYPE       VALUE
+                ----          ----       -----
+                discount_fac  float      0.999990    
+                dist_low      int        -111        
+                epsilon       float      0.030200    
+                mbot_high     int        40          
+                mtbot_high    int        648         
+                dist_high     int        1070        
+                mtbot_low     int        -924        
+                learning_rat  float      0.002363    
+                mbot_low      int        468  
+
+EPSILON = 0.0302
+LEARNING_RATE = 0.002363 
+DISCOUNT_FACTOR = 0.999990
+MTTOP_LOW = -111 #DIST_LOW
+MTTOP_HIGH = 1070
+MTBOT_LOW = -924
+MTBOT_HIGH = 648
+MBOT_LOW = 468
+MBOT_HIGH = 40
 # nested 6 layers for tree_dist, tree_top, tree_bot, monkey_vel, monkey_top, monkey_bot
 
 class Learner(object):
@@ -24,7 +37,6 @@ class Learner(object):
 
     def __init__(self):
         self.reset()
-        print 'ehh'
         self.count = 1
         # self.W = dd(lambda: dd(lambda: dd(lambda: dd(lambda: dd(lambda: dd(lambda: [0,0]))))))
         #grav[1,4]
@@ -165,7 +177,7 @@ class Learner(object):
                     )
                 )
             a = self.get_W_parameters_array(self.last_state)
-            print '%i :updated %i %i %i to %f' % (self.count, a[0], a[1], a[2], W_last_actions[self.last_action])
+            # print '%i :updated %i %i %i to %f' % (self.count, a[0], a[1], a[2], W_last_actions[self.last_action])
             self.count += 1
             if self.last_reward < 0:
                 print 'DEAD with %i' % self.last_reward 
@@ -233,7 +245,7 @@ if __name__ == '__main__':
     hist = []
 
     # Run games. 
-    run_games(agent, hist, 20, 10)
+    run_games(agent, hist, 20, 1)
 
     # Save history. 
     np.save('hist',np.array(hist))
