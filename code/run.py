@@ -6,27 +6,28 @@ from SwingyMonkey import SwingyMonkey
 
 from collections import defaultdict as dd
 
-Minimum of observed values is -9019.000000, at location:
-                NAME          TYPE       VALUE
-                ----          ----       -----
-                discount_fac  float      0.999990    
-                dist_low      int        -111        
-                epsilon       float      0.030200    
-                mbot_high     int        40          
-                mtbot_high    int        648         
-                dist_high     int        1070        
-                mtbot_low     int        -924        
-                learning_rat  float      0.002363    
-                mbot_low      int        468  
 
-EPSILON = 0.0302
-LEARNING_RATE = 0.002363 
+# Minimum of observed values is -18733.000000, at location:
+#                 NAME          TYPE       VALUE
+#                 ----          ----       -----
+#                 discount_fac  float      0.999990    
+#                 dist_low      int        -111        
+#                 epsilon       float      0.029859    
+#                 mbot_high     int        40          
+#                 mtbot_high    int        800         
+#                 dist_high     int        1070        
+#                 mtbot_low     int        50          
+#                 learning_rat  float      0.002343    
+#                 mbot_low      int        467      
+
+EPSILON = 0.029859
+LEARNING_RATE = 0.002343
 DISCOUNT_FACTOR = 0.999990
 MTTOP_LOW = -111 #DIST_LOW
 MTTOP_HIGH = 1070
-MTBOT_LOW = -924
-MTBOT_HIGH = 648
-MBOT_LOW = 468
+MTBOT_LOW = 50
+MTBOT_HIGH = 800
+MBOT_LOW = 467
 MBOT_HIGH = 40
 # nested 6 layers for tree_dist, tree_top, tree_bot, monkey_vel, monkey_top, monkey_bot
 
